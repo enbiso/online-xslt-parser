@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>XSLT Parser</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row editor-container">
+            <div class="col-sm-4" id="xml-input" class="editor"></div>
+            <div class="col-sm-4" id="xslt-input" class="editor"></div>
+            <div class="col-sm-4" id="output" class="editor"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var xsltProcessor = new XSLTProcessor();
+            var xmlSerializer = new XMLSerializer();
+
+            var xmlEditor = ace.edit("xml-input");
+            xmlEditor.setOptions({ maxLines: 100, minLines: 100 });
+            xmlEditor.setTheme("ace/theme/monokai");
+            xmlEditor.getSession().setMode("ace/mode/xml");
+
+            var xsltEditor = ace.edit("xslt-input");
+            xsltEditor.setOptions({ maxLines: 100, minLines: 100 });
+            xsltEditor.setTheme("ace/theme/monokai");
+            xsltEditor.getSession().setMode("ace/mode/xml");
+
+
+            var outputEditor = ace.edit("output");
+            outputEditor.setOptions({ maxLines: 100, minLines: 100 });
+            outputEditor.setTheme("ace/theme/monokai");
+            outputEditor.getSession().setMode("ace/mode/xml");
+
+            function parse() {
+                try {
+                    var xmlSource = xmlEditor.getSession().getValue();
+                    var xslSource = xsltEditor.getSession().getValue();
+                    xsltProcessor.reset();
+                    xsltProcessor.importStylesheet($.parseXML(xslSource));
+                    resultDocument = xsltProcessor.transformToFragment($.parseXML(xmlSource), document);
+                    outputEditor.setValue(xmlSerializer.serializeToString(resultDocument));
+                } catch(ex) {
+                    outputEditor.setValue(ex.message);
+                }
+            }
+
+            xsltEditor.getSession().on('change', function () {
+                setTimeout(parse, 100);
+            });
+
+            xmlEditor.getSession().on('change', function () {
+                setTimeout(parse, 100);
+            });
+
+        });
+    </script>
+</body>
+
+</html>
