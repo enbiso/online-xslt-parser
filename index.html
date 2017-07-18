@@ -10,8 +10,8 @@
 <body>
     <div class="container-fluid">
         <div class="row editor-container">
-            <div class="col-sm-4" id="xml-input" class="editor"></div>
-            <div class="col-sm-4" id="xslt-input" class="editor"></div>
+            <div class="col-sm-4" id="xml-input" class="editor">XML goes here</div>
+            <div class="col-sm-4" id="xslt-input" class="editor">XSLT goes here</div>
             <div class="col-sm-4" id="output" class="editor"></div>
         </div>
     </div>
@@ -36,7 +36,7 @@
 
 
             var outputEditor = ace.edit("output");
-            outputEditor.setOptions({ maxLines: 100, minLines: 100 });
+            outputEditor.setOptions({ maxLines: 100, minLines: 100, readOnly: true });
             outputEditor.setTheme("ace/theme/monokai");
             outputEditor.getSession().setMode("ace/mode/xml");
 
