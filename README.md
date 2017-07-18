@@ -3,7 +3,7 @@ Online XSLT Parser written completely on client technologies.
 
 You can access the parser using the below link
 
-https://enbiso.github.io/xslt-parser/
+https://enbiso.github.io/online-xslt-parser
 
 ## Thanks to
  - Ace Editor
